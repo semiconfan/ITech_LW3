@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="uk-UA">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лабораторна робота №3</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+
+    <div class ="controllers">
+        <h3> Зміна параметрів зображення</h3>
+
+        <p> Зміна розташування зображення</p>
+        <button class="buttons" onclick="moveUp()">Вище</button>
+        <button class="buttons" onclick="moveDown()">Нижче</button>
+        <br>
+        <form id="imgForm">
+            <label for="width">Ширина:</label><br>
+            <input type="number" name="width" id="width">
+            <br>
+            <label for="height">Висота:</label><br>
+            <input type="number" name="height" id="height">
+            <br>
+            <label for="border">Товщина рамки:</label><br>
+            <input type="number" name="border" id="border">
+            <br>
+            <label for="altText">Альтернативний текст:</label><br>
+            <input type="text" name="altText" id="altText">
+            <br>
+            <input type="button" value="Застосувати" onclick="applyChanges()">
+        </form>
+    </div>
+
+    <h3>Галерея зображень</h3>
+
+    <div id="gallery" class="">
+        <img src="./images/img1.png" alt="Image 1"   class="images">
+        <img src="./images/img2.png" alt="Image 2"   class="images">
+        <img src="./images/img3.png" alt="Image 3"   class="images">
+        <img src="./images/img4.png" alt="Image 4"   class="images">
+        <img src="./images/img5.png" alt="Image 5"   class="images">
+        <img src="./images/img6.png" alt="Image 6"   class="images">
+        <img src="./images/img7.png" alt="Image 7"   class="images">
+        <img src="./images/img8.png" alt="Image 8"   class="images">
+        <img src="./images/img9.png" alt="Image 9"   class="images">
+        <img src="./images/img10.png" alt="Image 10" class="images">
+    </div>
+
+    <script>
+        var selectedImage = null;
+        var images = document.getElementsByTagName('img');
+
+        // Вибір зображення при натисканні на нього
+        document.getElementById('gallery').onclick =
+        function(event) {
+            var target = event.target;
+            if (target.tagName != 'IMG') return;
+
+            for (var i = 0; i < images.length; i++) {
+                // Скидання графічного виділення з усіх інших зображень
+                images[i].style.border = "2px solid black";
+            }
+
+            // Якщо вибране зображення вже було виділене, скасовано виділення
+            if(selectedImage == target) {
+                selectedImage = null;
+            } else {
+                selectedImage = target;
+                target.style.border = "4px solid red"; // Підсівчення обраного зображення
+            }
+        }
+
+        // Функція для переміщення зображення вгору
+        function moveUp(){
+            if (!selectedImage) return;
+            var iOfSelectedImage = Array.prototype.indexOf.call(images, selectedImage);
+            if (iOfSelectedImage > 0) {
+                var gallery = document.getElementById('gallery');
+                var previousImage = images[iOfSelectedImage - 1];
+                gallery.insertBefore(selectedImage, previousImage);
+            }
+        }
+
+        // Функція для переміщення зображення вниз
+        function moveDown(){
+            if(!selectedImage) return;
+            var iOfSelectedImage = Array.prototype.indexOf.call(images, selectedImage);
+            if (iOfSelectedImage < images.length - 1) {
+                var gallery = document.getElementById('gallery');
+                var nextImage = images[iOfSelectedImage + 1];
+                gallery.insertBefore(nextImage, selectedImage);
+            }
+        }
+
+        function applyChanges(){
+            if(!selectedImage) return;
+            var width = document.getElementById('width').value;
+            var height = document.getElementById('height').value;
+            var border = document.getElementById('border').value;
+            var altText = document.getElementById('altText').value;
+
+            if(width) selectedImage.style.width = width + "px";
+            if(height) selectedImage.style.height = height + "px";
+            if(border) selectedImage.style.borderWidth = border + "px";
+            if(altText) selectedImage.alt = altText;
+        }
+    </script>
+
+</body>
+</html>
